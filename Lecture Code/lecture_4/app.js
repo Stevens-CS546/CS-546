@@ -1,5 +1,6 @@
 const dogs = require("./dogs");
 const posts = require("./posts");
+const connection = require("./mongoConnection");
 
 let addSasha = dogs.addDog("Sasha", ["Cheagle", "Chihuaha", "Beagle"]);
 
@@ -20,4 +21,14 @@ let removeTheFirstPostAfterUpdate = updatingSashasFirstPost.then((updatedPost) =
     console.log("That's all, folks!");
 
     return posts.removePost(updatedPost._id);
+});
+
+let otherThingToDo = updatingSashasFirstPost.then((updatedPost) => {
+    // ..
+})
+
+removeTheFirstPostAfterUpdate.catch().then(() => {
+    return connection();
+}).then((db) => {
+    return db.close();
 });

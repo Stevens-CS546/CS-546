@@ -1,24 +1,35 @@
-const mongoCollections = require("./mongoCollections");
+const mongoCollections = require("../config/mongoCollections");
 const posts = mongoCollections.posts;
-const dogs = require("./dogs");
+const users = require("./users");
+const uuid = require('node-uuid');
+
 
 let exportedMethods = {
+    getAllPosts() {
+        return posts().then((postCollection) => {
+            return postCollection.find({}).toArray();
+        })
+    },
     getPostById(id) {
         return posts().then((postCollection) => {
-            return postCollection.findOne({ _id: id });
+            return postCollection.findOne({ _id: id }).then((post) => {
+                if (!post) throw "Post not found";
+                return post;
+            });
         });
     },
     addPost(title, body, posterId) {
         return posts().then((postCollection) => {
-            return dogs.getDogById(posterId)
-                .then((dogThatPosted) => {
+            return users.getUserById(posterId)
+                .then((userThatPosted) => {
                     let newPost = {
                         title: title,
                         body: body,
                         poster: {
                             id: posterId,
-                            name: dogThatPosted.name
-                        }
+                            name: `${userThatPosted.firstName} ${userThatPosted.lastName}`
+                        },
+                        _id: uuid.v4()
                     };
 
                     return postCollection.insertOne(newPost).then((newInsertInformation) => {
@@ -34,27 +45,26 @@ let exportedMethods = {
             return postCollection.removeOne({ _id: id }).then((deletionInfo) => {
                 if (deletionInfo.deletedCount === 0) {
                     throw (`Could not delete post with id of ${id}`)
-                }
+                } else { }
             });
         });
     },
     updatePost(id, title, body, posterId) {
         return posts().then((postCollection) => {
-            return dogs.getDogById(posterId)
-                .then((dogThatPosted) => {
+            return users.getUserById(posterId)
+                .then((userThatPosted) => {
                     let updatedPost = {
                         title: title,
                         body: body,
                         poster: {
                             id: posterId,
-                            name: dogThatPosted.name
+                            name: userThatPosted.name
                         }
                     };
 
                     return postCollection.updateOne({ _id: id }, updatedPost).then((result) => {
                         return this.getPostById(id);
                     });
-
                 });
         });
     }
