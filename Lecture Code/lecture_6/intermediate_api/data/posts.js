@@ -7,7 +7,12 @@ let exportedMethods = {
     getAllPosts() {
         return posts().then((postCollection) => {
             return postCollection.find({}).toArray();
-        })
+        });
+    },
+    getPostsByTag(tag) {
+        return posts().then((postCollection) => {
+            return postCollection.find({ tags: tag }).toArray();
+        });
     },
     getPostById(id) {
         return posts().then((postCollection) => {
@@ -17,7 +22,7 @@ let exportedMethods = {
             });
         });
     },
-    addPost(title, body, posterId) {
+    addPost(title, body, tags, posterId) {
         return posts().then((postCollection) => {
             return users.getUserById(posterId)
                 .then((userThatPosted) => {
@@ -28,6 +33,7 @@ let exportedMethods = {
                             id: posterId,
                             name: `${userThatPosted.firstName} ${userThatPosted.lastName}`
                         },
+                        tags: tags,
                         _id: uuid.v4()
                     };
 
@@ -48,23 +54,48 @@ let exportedMethods = {
             });
         });
     },
-    updatePost(id, title, body, posterId) {
+    updatePost(id, updatedPost) {
         return posts().then((postCollection) => {
-            return users.getUserById(posterId)
-                .then((userThatPosted) => {
-                    let updatedPost = {
-                        title: title,
-                        body: body,
-                        poster: {
-                            id: posterId,
-                            name: userThatPosted.name
-                        }
-                    };
+            let updatedPostData = {};
 
-                    return postCollection.updateOne({ _id: id }, updatedPost).then((result) => {
-                        return this.getPostById(id);
-                    });
-                });
+            if (updatedPost.tags) {
+                updatedPostData.tags = updatedPost.tags;
+            }
+
+            if (updatedPost.title) {
+                updatedPostData.title = updatedPost.title;
+            }
+
+            if (updatedPost.body) {
+                updatedPostData.body = updatedPost.body;
+            }
+
+            let updateCommand = {
+                $set: updatedPostData
+            };
+
+            return postCollection.updateOne({ _id: id }, updateCommand).then((result) => {
+                return this.getPostById(id);
+            });
+        });
+    },
+    renameTag(oldTag, newTag) {
+        let findDocuments = {
+            tags: oldTag
+        };
+
+        let firstUpdate = {
+            $pull: oldTag
+        };
+
+        let secondUpdate = {
+            $addToSet: newTag
+        };
+
+        return postCollection.updateMany(findDocuments, firstUpdate).then((result) => {
+            return postCollection.updateMany(findDocuments, secondUpdate);
+        }).then((secondUpdate) => {
+            return this.getPostsByTag(newTag);
         });
     }
 }
