@@ -43,6 +43,7 @@
 
         return returnFunction;
     }
+    
     var staticForm = document.getElementById("static-form");
 
     if (staticForm) {
