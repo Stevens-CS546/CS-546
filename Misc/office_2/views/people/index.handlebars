@@ -1,0 +1,10 @@
+<section>
+  <header>
+  <h3>List of people</h3>
+  </header>
+  {{#each people}}  
+    <article class="people">
+      <h4><a href="/people/{{id}}">{{name}}</a></h4>
+    </article>
+  {{/each}}
+</section>

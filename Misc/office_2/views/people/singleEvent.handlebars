@@ -1,0 +1,14 @@
+<article class="people">
+ <header> <h3>Person Details</h3></header>
+  <h6>Name :</h6><p>{{ person.name }}</p>
+  
+  {{#if person.events.length}}
+    <h4>Upcoming Events</h4>
+    <ul>
+      {{#each person.events}}
+        <li><a href="/events/{{this.id}}">{{this.title}}</a></li>
+      {{/each}}
+    </ul>
+  {{/if}}
+
+</article>
