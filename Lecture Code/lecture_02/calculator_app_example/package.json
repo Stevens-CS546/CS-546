@@ -1,14 +1,22 @@
 {
   "name": "calculator_app_example",
   "version": "1.0.0",
-  "description": "A simple application",
+  "description": "A simple application to use the command line prompty to get simple calculator data",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "node",
+    "app",
+    "caluculator",
+    "cs546",
+    "fun",
+    "coffee"
+  ],
+  "author": "Phil and Friends",
+  "license": "MIT",
   "dependencies": {
     "prompt": "^1.0.0"
   }

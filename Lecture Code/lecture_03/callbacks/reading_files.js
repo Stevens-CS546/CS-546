@@ -39,6 +39,7 @@ jsonFile.readJSON("the-c-team.json", (error, asObject) => {
         if (error) throw error;
 
         jsonFile.readJSON("name-data.json", (error, data) => {
+            console.log(data);
             // do more work!
             // // on
             // // // and

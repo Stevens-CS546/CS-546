@@ -1,12 +1,12 @@
 {
   "name": "calculator_module_example",
-  "version": "0.0.1",
-  "description": "A simple calculator module",
+  "version": "1.0.1",
+  "description": "A simple calculator module to compute basic results",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
-  "author": "Phil Barresi",
+  "author": "Phil and Friends",
   "license": "MIT"
 }

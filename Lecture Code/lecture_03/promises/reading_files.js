@@ -62,4 +62,8 @@ cTeamDataResult.then((cTeamData) => {
     return jsonFile.writeJSON("name-data.json", nameData);
 }).then(() => {
     console.log("Done writing results");
+}).catch((error) => {
+    console.log(error);
 });
+
+console.log("End of file");

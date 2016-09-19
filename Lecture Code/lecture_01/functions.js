@@ -32,4 +32,18 @@ function printSquaresUntil(num) {
     }
 }
 
+function haveAnInnerFunction() {
+    function myInnerFunction() {
+        return "Hello, I'm an inner function!";
+
+    }
+
+    if (true) {
+        console.log(myInnerFunction());
+    }
+}
+
+haveAnInnerFunction();
+myInnerFunction();
+
 printSquaresUntil(12);

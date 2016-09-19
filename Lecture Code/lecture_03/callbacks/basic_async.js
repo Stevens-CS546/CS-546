@@ -1,10 +1,12 @@
 let x = 25;
 
 for (let i = 0; i < 10; i++) {
-    console.log("loop is running");
-    process.nextTick(() => {
-        console.log(`i (inside nextTick) is ${i}`);
-    });
+    let randomMilliSeconds = Math.random() * 1000;
+
+    console.log(`loop is running (${randomMilliSeconds})`);
+    setTimeout(() => {
+        console.log(`i (inside nextTick) is ${i} after ${randomMilliSeconds}`);
+    }, randomMilliSeconds);
 }
 
 console.log("This is synchronous");

@@ -51,7 +51,20 @@ function getInfo() {
     prompt.get([operation, num1Prompt, num2Prompt, quitPrompt], function (err, result) {
         if (result) {
             let num1 = result.num1;
+
+            if (isNaN(num1)) {
+                console.log("First number is not a number");
+                getInfo();
+                return;
+            }
+
             let num2 = result.num2;
+            if (isNaN(num2)) {
+                console.log("Second number is not a number");
+                getInfo();
+                return;
+            }
+
             let quit = result.quit;
             let operation = stringToOperation(result.operation);
 
@@ -73,7 +86,7 @@ function getInfo() {
             }
 
             let numericalResult = operationFunction(num1, num2);
-            
+
             console.log(`when you ${operation} ${num1} with ${num2} you get ${numericalResult}`);
 
             if (!quit) {
@@ -84,6 +97,7 @@ function getInfo() {
         }
 
     });
+
 
 }
 
