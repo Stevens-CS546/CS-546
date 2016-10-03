@@ -8,7 +8,7 @@ router.get("/:id", (req, res) => {
         res.json(user);
     }, (error) => {
         // Not found!
-        res.sendStatus(404);
+        res.status(404).json({message: "not found!"});
     });
 });
 
@@ -17,13 +17,13 @@ router.get("/", (req, res) => {
         res.json(userList);
     }, () => {
         // Something went wrong with the server!
-        res.sendStatus(500);
+        res.status(500).send();
     });
 });
 
 router.post("/", (req, res) => {
     // Not implemented
-    res.sendStatus(501);
+    res.status(501).send();
 });
 
 module.exports = router;

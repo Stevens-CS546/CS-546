@@ -6,9 +6,9 @@ const postData = data.posts;
 router.get("/:id", (req, res) => {
     postData.getPostById(req.params.id).then((post) => {
         res.json(post);
-    }, (error) => {
+    }).catch((error) => {
         // Not found!
-        res.sendStatus(404);
+        res.status(404).json({message: "Post not found"});
     });
 });
 
@@ -17,13 +17,13 @@ router.get("/", (req, res) => {
         res.json(postList);
     }, () => {
         // Something went wrong with the server!
-        res.sendStatus(500);
+        res.status(500).send();
     });
 });
 
 router.post("/", (req, res) => {
     // Not implemented
-    res.sendStatus(501);
+    res.status(501).send();
 });
 
 module.exports = router;
