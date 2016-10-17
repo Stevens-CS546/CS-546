@@ -6,52 +6,77 @@ const uuid = require('node-uuid');
 let exportedMethods = {
     getAllPosts() {
         return posts().then((postCollection) => {
-            return postCollection.find({}).toArray();
+            return postCollection
+                .find({})
+                .toArray();
         });
     },
     getPostsByTag(tag) {
+        if (!tag) 
+            return Promise.reject("No tag provided");
+        
         return posts().then((postCollection) => {
-            return postCollection.find({ tags: tag }).toArray();
+            return postCollection
+                .find({tags: tag})
+                .toArray();
         });
     },
     getPostById(id) {
         return posts().then((postCollection) => {
-            return postCollection.findOne({ _id: id }).then((post) => {
-                if (!post) throw "Post not found";
-                return post;
-            });
+            return postCollection
+                .findOne({_id: id})
+                .then((post) => {
+                    if (!post) 
+                        throw "Post not found";
+                    return post;
+                });
         });
     },
     addPost(title, body, tags, posterId) {
+        if (typeof title !== "string") 
+            return Promise.reject("No title provided");
+        if (typeof body !== "string") 
+            return Promise.reject("I aint got nobody!");
+
+        if (!Array.isArray(tags)) {
+            tags = [];
+        }
+        
         return posts().then((postCollection) => {
-            return users.getUserById(posterId)
+            return users
+                .getUserById(posterId)
                 .then((userThatPosted) => {
                     let newPost = {
                         title: title,
                         body: body,
                         poster: {
                             id: posterId,
-                            name: `${userThatPosted.firstName} ${userThatPosted.lastName}`
+                            name: `${userThatPosted.name}`
                         },
                         tags: tags,
                         _id: uuid.v4()
                     };
 
-                    return postCollection.insertOne(newPost).then((newInsertInformation) => {
-                        return newInsertInformation.insertedId;
-                    }).then((newId) => {
-                        return this.getPostById(newId);
-                    });
+                    return postCollection
+                        .insertOne(newPost)
+                        .then((newInsertInformation) => {
+                            return newInsertInformation.insertedId;
+                        })
+                        .then((newId) => {
+                            return this.getPostById(newId);
+                        });
                 });
         });
     },
     removePost(id) {
         return posts().then((postCollection) => {
-            return postCollection.removeOne({ _id: id }).then((deletionInfo) => {
-                if (deletionInfo.deletedCount === 0) {
-                    throw (`Could not delete post with id of ${id}`)
-                } else { }
-            });
+            return postCollection
+                .removeOne({_id: id})
+                .then((deletionInfo) => {
+                    if (deletionInfo.deletedCount === 0) {
+                        throw(`Could not delete post with id of ${id}`)
+                    } else {}
+                });
         });
     },
     updatePost(id, updatedPost) {
@@ -74,7 +99,9 @@ let exportedMethods = {
                 $set: updatedPostData
             };
 
-            return postCollection.updateOne({ _id: id }, updateCommand).then((result) => {
+            return postCollection.updateOne({
+                _id: id
+            }, updateCommand).then((result) => {
                 return this.getPostById(id);
             });
         });
@@ -92,11 +119,14 @@ let exportedMethods = {
             $addToSet: newTag
         };
 
-        return postCollection.updateMany(findDocuments, firstUpdate).then((result) => {
-            return postCollection.updateMany(findDocuments, secondUpdate);
-        }).then((secondUpdate) => {
-            return this.getPostsByTag(newTag);
-        });
+        return postCollection
+            .updateMany(findDocuments, firstUpdate)
+            .then((result) => {
+                return postCollection.updateMany(findDocuments, secondUpdate);
+            })
+            .then((secondUpdate) => {
+                return this.getPostsByTag(newTag);
+            });
     }
 }
 

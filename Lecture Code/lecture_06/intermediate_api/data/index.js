@@ -1,12 +1,7 @@
-const postRoutes = require("./posts");
-const userRoutes = require("./users");
-
-let constructorMethod = (app) => {
-    app.use("/post", postRoutes);
-    app.use("/user", userRoutes);
-};
+const postData = require("./posts");
+const userData = require("./users");
 
 module.exports = {
-    users: require("./users"),
-    posts: require("./posts")
+    users: postData,
+    posts: userData
 };
