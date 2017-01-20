@@ -12,14 +12,14 @@ let myNumArraySquared = myNumArray.map((x) => {
 console.log(myNumArray);
 console.log(myNumArraySquared);
 
-var oddNumbers = myNumArray.filter((num) => {
+let oddNumbers = myNumArray.filter((num) => {
     return num % 2 === 1;
 });
 
 console.log(myNumArray);
 console.log(oddNumbers);
 
-var sumOfOdds = oddNumbers.reduce((currentTotal, newValue) => {
+let sumOfOdds = oddNumbers.reduce((currentTotal, newValue) => {
     return currentTotal + newValue;
 }, 0);
 

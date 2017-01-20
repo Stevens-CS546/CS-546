@@ -12,8 +12,10 @@ let doubleUp = (x) => {
 };
 
 let addToTheNumber = (num) => {
+    let numToAdd = num;
+
     return (addThisMuch) => {
-        return num + addThisMuch;
+        return numToAdd + addThisMuch;
     }
 };
 
@@ -44,6 +46,24 @@ function haveAnInnerFunction() {
 }
 
 haveAnInnerFunction();
-myInnerFunction();
+//myInnerFunction();
 
-printSquaresUntil(12);
+// printSquaresUntil(12);
+
+function demonstrateVarVersusLet() {
+    for (let i = 0; i < 12; i++) {
+        console.log("printing var at index " + i);
+
+        if (i === 11) {
+            // for some reason, we/re doing math
+            // the math needs a variable named k
+            let k = 10;
+        }
+    }
+
+    for (let k = 0; k < 12; k++) {
+        console.log("k is " + k);
+    }
+}
+
+demonstrateVarVersusLet();
