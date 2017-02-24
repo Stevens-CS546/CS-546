@@ -27,8 +27,17 @@ let otherThingToDo = updatingSashasFirstPost.then((updatedPost) => {
     // ..
 })
 
-removeTheFirstPostAfterUpdate.catch().then(() => {
+removeTheFirstPostAfterUpdate.then(() => {
+    return connection();
+}).catch((err) => {
+    console.error(err);
     return connection();
 }).then((db) => {
     return db.close();
-});
+}).then(() => {
+    let temp = process._getActiveRequests();
+    let otherTemp = process._getActiveHandles();
+
+    console.log(temp);
+    console.log(otherTemp);
+})
