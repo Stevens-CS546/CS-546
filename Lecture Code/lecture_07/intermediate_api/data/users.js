@@ -14,7 +14,7 @@ let exportedMethods = {
         return users().then((userCollection) => {
             return userCollection.findOne({ _id: id }).then((user) => {
                 if (!user) throw "User not found";
-                
+
                 return user;
             });
         });
@@ -46,17 +46,19 @@ let exportedMethods = {
     },
     updateUser(id, updatedUser) {
         return this.getUserById(id).then((currentUser) => {
-            let updatedUser = {
+            let userUpdateInfo = {
                 firstName: updatedUser.firstName,
                 lastName: updatedUser.lastName
             };
 
-            let updateCommand = { 
-                $set: updatedUser
+            let updateCommand = {
+                $set: userUpdateInfo
             };
 
-            return userCollection.updateOne({ _id: id }, updateCommand).then(() => {
-                return this.getUserById(id);
+            return users().then((userCollection) => {
+                return userCollection.updateOne({ _id: id }, updateCommand).then(() => {
+                    return this.getUserById(id);
+                });
             });
         });
     },

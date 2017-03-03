@@ -64,11 +64,12 @@ router.put("/:id", (req, res) => {
         return;
     }
 
-    let getUser = userData.getUser(req.params.id).then(() => {
+    let getUser = userData.getUserById(req.params.id).then(() => {
         return userData.updateUser(req.params.id, userInfo)
             .then((updatedUser) => {
                 res.json(updatedUser);
-            }, () => {
+            }, (error) => {
+                console.log(error);
                 res.sendStatus(500);
             });
     }).catch(() => {
@@ -79,14 +80,15 @@ router.put("/:id", (req, res) => {
 
 router.delete("/:id", (req, res) => {
     let user = userData.getUserById(req.params.id).then(() => {
-        return userData.removePost(req.params.id)
+        return userData.removeUser(req.params.id)
             .then(() => {
                 res.sendStatus(200);
             }).catch(() => {
                 res.sendStatus(500);
             });
 
-    }).catch(() => {
+    }).catch((err) => {
+        console.log(err);
         res.status(404).json({ error: "User not found" });
     });
 });
