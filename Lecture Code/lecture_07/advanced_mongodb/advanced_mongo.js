@@ -1,9 +1,8 @@
-var MongoClient = require('mongodb').MongoClient,
+let MongoClient = require('mongodb').MongoClient,
     runStartup = require("./advanced_startup_docs.js"),
     settings = require('./config.js');
 
-var fullMongoUrl = settings.mongoConfig.serverUrl + settings.mongoConfig.database;
-var exports = module.exports = {};
+let fullMongoUrl = settings.mongoConfig.serverUrl + settings.mongoConfig.database;
 
 runStartup().then(function(allMovies) {
     console.log("After the advanced document setup has been complete, we have the following movies:");
@@ -12,7 +11,7 @@ runStartup().then(function(allMovies) {
 
 MongoClient.connect(fullMongoUrl)
     .then(function(db) {
-        var movieCollection = db.collection("advancedMovies");
+        let movieCollection = db.collection("advancedMovies");
 
         // simple stuff
         exports.getAllMovies = function() {
