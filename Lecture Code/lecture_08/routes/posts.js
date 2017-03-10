@@ -3,6 +3,10 @@ const router = express.Router();
 const data = require("../data");
 const postData = data.posts;
 
+router.get("/new", (req, res) => {
+    res.render('posts/new');
+})
+
 router.get("/:id", (req, res) => {
     postData.getPostById(req.params.id).then((post) => {
         res.render('posts/single', { post: post });

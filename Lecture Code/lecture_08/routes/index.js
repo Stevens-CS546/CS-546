@@ -7,8 +7,7 @@ const constructorMethod = (app) => {
     app.use("/users", userRoutes);
 
     app.use("*", (req, res) => {
-        let route = path.resolve(`static/about.html`);
-        res.sendFile(route);
+        res.redirect("/posts");
     })
 };
 

@@ -12,12 +12,12 @@ dbConnection().then(db => {
         const id = phil._id;
 
         return posts
-            .addPost("Hello, class!", "Today we are creating a blog!", id)
+            .addPost("Hello, class!", "Today we are creating a blog!", [], id)
             .then(() => {
-                return posts.addPost("Using the seed", "We use the seed to have some initial data so we can just focus on servers this week", id);
+                return posts.addPost("Using the seed", "We use the seed to have some initial data so we can just focus on servers this week", [], id);
             })
-            .then(() => {
-                return posts.addPost("Using routes", "The purpose of today is to simply look at some GET routes", id);
+            .then(() => { 
+                return posts.addPost("Using routes", "The purpose of today is to simply look at some GET routes", [], id);
             });
     }).then(() => {
         console.log("Done seeding database");
