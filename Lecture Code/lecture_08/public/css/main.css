@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     background: #FEFEFE;
     font-family: Georgia, Cambria, "Times New Roman", Times, serif;
@@ -52,3 +56,22 @@ p {
     border-bottom: 1px dashed #333;
 }
 
+
+.new-post-form {
+    max-width: 300px;
+}
+
+.new-post-form .full-width-input {
+    display: block;
+    min-height: 3em;
+    margin: 10px 0;
+    width: 100%;
+}
+
+label {
+    font-weight: bold;
+}
+
+.error-list li {
+    color: #FF0000;
+}

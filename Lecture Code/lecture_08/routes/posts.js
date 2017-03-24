@@ -31,8 +31,26 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
     let blogPostData = req.body;
+    let errors = [];
 
-    postData.addPost(blogPostData.title, blogPostData.body, blogPostData.tags, blogPostData.posterId)
+    if (!blogPostData.title) {
+        errors.push("No title provided");
+    }
+
+    if (!blogPostData.body) {
+        errors.push("No body provided");
+    }
+
+    if (!blogPostData.posterId) {
+        errors.push("No poster selected");
+    }
+
+    if (errors.length > 0) {
+        res.render('posts/new', { errors: errors, hasErrors: true, post: blogPostData});
+        return;
+    }
+
+    postData.addPost(blogPostData.title, blogPostData.body, blogPostData.tags || [], blogPostData.posterId)
         .then((newPost) => {
             res.redirect(`/posts/${newPost._id}`);
         }).catch((e) => {
