@@ -37,7 +37,7 @@
 
     function operationStringToFunction(operation) {
         if (!operation) throw "No operation provided";
-        
+
         const returnFunction = calculatorMethods[operation];
 
         if (returnFunction === undefined) throw "No such operation";
@@ -63,7 +63,7 @@
 
         // We can take advantage of functional scoping; our event listener has access to its outer functional scope
         // This means that these variables are accessible in our callback
-        staticForm.addEventListener("submit", function (event) {
+        staticForm.addEventListener("submit", (event) => {
             event.preventDefault();
 
             try {
