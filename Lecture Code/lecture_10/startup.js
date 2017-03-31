@@ -1,4 +1,4 @@
-var MongoClient = require('mongodb').MongoClient,
+const MongoClient = require('mongodb').MongoClient,
     settings = require('./config.js'),
     Guid = require('Guid');
 

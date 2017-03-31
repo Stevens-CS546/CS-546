@@ -1,8 +1,7 @@
-var bcrypt = require("bcrypt-nodejs");
+const bcrypt = require("bcrypt-nodejs");
+const plainTextPassword = "mySuperAwesomePassword";
 
-var plainTextPassword = "mySuperAwesomePassword";
-
-var hash = bcrypt.hashSync(plainTextPassword);
+const hash = bcrypt.hashSync(plainTextPassword);
 // This hash will change each time it's generated!
 // That's one of the wonderful things about bcrypt -- even
 // though the has changes, you can still compare the unhashed version
@@ -10,7 +9,7 @@ var hash = bcrypt.hashSync(plainTextPassword);
 console.log(hash);
 
 // Load hash from your password DB.
-bcrypt.compare("merlinsbeard", hash, function(err, res) {
+bcrypt.compare("merlinsbeard", hash, (err, res) => {
     if (res === true) {
         console.log("merlinsbeard matches the hash");
     } else {
@@ -18,7 +17,7 @@ bcrypt.compare("merlinsbeard", hash, function(err, res) {
     }
 });
 
-bcrypt.compare("mySuperAwesomePassword", hash, function (err, res) {
+bcrypt.compare("mySuperAwesomePassword", hash, (err, res) => {
     if (res === true) {
         console.log("mySuperAwesomePassword matches the hash");
     } else {
