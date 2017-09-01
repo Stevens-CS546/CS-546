@@ -16,6 +16,8 @@
       url: "/",
       data: JSON.stringify(formData),
       success: function(data) {
+        console.log(data);
+        console.log(theResult);
         theResult.text(data.reply);
       },
       contentType: "application/json",

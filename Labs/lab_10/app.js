@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("/", (req, res) => {
   const email = req.body.email;
-  const message = req.body.text;
+  const message = req.body.message;
 
   const dataResponse = {
     email: email,
@@ -17,7 +17,7 @@ app.post("/", (req, res) => {
     reply: `[${email}]: ${message}`
   };
 
-  res.json(JSON.stringify(dataResponse));
+  res.json(dataResponse);
 });
 
 app.get("/", (req, res) => {

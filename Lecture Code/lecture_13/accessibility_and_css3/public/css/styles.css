@@ -18,6 +18,14 @@ h1 {
     background: #FEFEFE;
 }
 
+.editor p {
+    transition: font-size 2s ease-in-out;
+}
+
+.editor p:hover {
+    font-size: 1.25rem;
+}
+
 .editor p:first-child::first-line {
     font-size: 1.5rem;
     font-variant: small-caps;
@@ -28,8 +36,8 @@ h1 {
     font-family: cursive;
 }
 
-blockquote::before { 
-    display:  inline-block;
+blockquote::before {
+    display: inline-block;
     margin-left: -20px;
     content: '"';
     font-size: 32pt;
@@ -40,38 +48,34 @@ blockquote::before {
     from {
         transform: translate(0, 0);
     }
-    
     20% {
         transform: translate(-100px, 0);
     }
-
     40% {
         transform: translate(0, 0);
     }
-    
     60% {
-        transform: translate(100px, 0);        
+        transform: translate(100px, 0);
     }
-    
     to {
         transform: translate(0, 0);
     }
 }
 
-blockquote {
-}
+blockquote {}
 
 blockquote:hover {
-    animation:  shake 5s infinite;
+    animation: shake 5s infinite;
 }
 
-blockquote::after { 
+blockquote::after {
     content: '"';
     font-size: 32pt;
     font-family: serif;
 }
 
-blockquote, p { 
+blockquote,
+p {
     font-size: 1rem;
 }
 
@@ -87,7 +91,9 @@ blockquote, p {
     text-decoration: underline;
 }
 
+
 /* Lecture CSS Here */
+
 
 /* Media Queries */
 
@@ -100,12 +106,12 @@ blockquote, p {
 
 @media(min-width: 800px) {
     html {
-        font-size: 14pt;    
+        font-size: 14pt;
     }
-    
     main {
         max-width: 640px;
     }
 }
+
 
 /* Transitions and Animations */

@@ -1,22 +1,26 @@
 function myGlobalFunction() {
-    console.log("I'm a global function");
+  console.log("I'm a global function");
 }
 
 function printThisMessage(message) {
-    console.log("We've received a message!");
-    console.log(message);
+  console.log("We've received a message!");
+  console.log(message);
 }
 
-let doubleUp = (x) => {
-    return x * 2;
+let doubleUpAnonymous = function(x) {
+  return x * 2;
 };
 
-let addToTheNumber = (num) => {
-    let numToAdd = num;
+let doubleUp = x => {
+  return x * 2;
+};
 
-    return (addThisMuch) => {
-        return numToAdd + addThisMuch;
-    }
+let addToTheNumber = num => {
+  let numToAdd = num;
+
+  return addThisMuch => {
+    return numToAdd + addThisMuch;
+  };
 };
 
 myGlobalFunction();
@@ -28,21 +32,20 @@ console.log(addToTwelve);
 console.log(addToTwelve(8));
 
 function printSquaresUntil(num) {
-    for (let i = 2; i < num; i++) {
-        let num = i * i;
-        console.log(`the square of ${i} is ${num}`);
-    }
+  for (let i = 2; i < num; i++) {
+    let num = i * i;
+    console.log(`the square of ${i} is ${num}`);
+  }
 }
 
 function haveAnInnerFunction() {
-    function myInnerFunction() {
-        return "Hello, I'm an inner function!";
+  function myInnerFunction() {
+    return "Hello, I'm an inner function!";
+  }
 
-    }
-
-    if (true) {
-        console.log(myInnerFunction());
-    }
+  if (true) {
+    console.log(myInnerFunction());
+  }
 }
 
 haveAnInnerFunction();
@@ -51,19 +54,20 @@ haveAnInnerFunction();
 // printSquaresUntil(12);
 
 function demonstrateVarVersusLet() {
-    for (let i = 0; i < 12; i++) {
-        console.log("printing var at index " + i);
+  for (let i = 0; i < 12; i++) {
+    console.log("printing var at index " + i);
 
-        if (i === 11) {
-            // for some reason, we/re doing math
-            // the math needs a variable named k
-            let k = 10;
-        }
+    if (i === 11) {
+      // for some reason, we're doing math
+      // the math needs a variable named k
+      // CHANGE THIS BETWEEN `var` and `let` to see difference!
+      let k = 10;
     }
+  }
 
-    for (let k = 0; k < 12; k++) {
-        console.log("k is " + k);
-    }
+  for (let k = 0; k < 12; k++) {
+    console.log("k is " + k);
+  }
 }
 
 demonstrateVarVersusLet();
