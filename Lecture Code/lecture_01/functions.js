@@ -54,19 +54,45 @@ haveAnInnerFunction();
 // printSquaresUntil(12);
 
 function demonstrateVarVersusLet() {
-  for (let i = 0; i < 12; i++) {
-    console.log("printing var at index " + i);
+  // Say you want to do some basic counts, like count the number of odds and then
+  // the number of event numbers from 0 to 12
 
-    if (i === 11) {
-      // for some reason, we're doing math
-      // the math needs a variable named k
-      // CHANGE THIS BETWEEN `var` and `let` to see difference!
-      let k = 10;
+  // Change this between "odd", "even", and "both";
+  const whatDoICount = "both";
+  const howManyToCount = 12;
+
+  if (whatDoICount === "odd" || whatDoICount === "both") {
+    // CHANGE THIS BETWEEN `var` and `let` to see difference!
+    var count;
+
+    for (let i = 0; i < howManyToCount; i++) {
+      if (i % 2 === 1) {
+        if (count === undefined) {
+          count = 0;
+        }
+
+        count = count + 1;
+      }
+
+      console.log(`at index ${i} there are ${count} odd numbers`);
     }
   }
 
-  for (let k = 0; k < 12; k++) {
-    console.log("k is " + k);
+  if (whatDoICount === "even" || whatDoICount === "both") {
+    // CHANGE THIS BETWEEN `var` and `let` to see difference!
+    var count;
+
+    for (let i = 0; i < howManyToCount; i++) {
+      if (i % 2 === 0) {
+        if (count === undefined) {
+          count = 0;
+        }
+
+        count = count + 1;
+      }
+
+      console.log(`at index ${i} there are ${count} even numbers`);
+    }
   }
 }
 
