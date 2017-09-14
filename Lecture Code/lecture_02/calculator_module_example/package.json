@@ -1,12 +1,12 @@
 {
   "name": "calculator_module_example",
-  "version": "1.0.1",
-  "description": "A simple calculator module to compute basic results",
+  "version": "1.0.0",
+  "description": "This is a description. For the lecture calculator module example.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Phil and Friends",
+  "author": "Phil",
   "license": "MIT"
 }

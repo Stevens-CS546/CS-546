@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "prompt": "^1.0.0"
+  }
+}
