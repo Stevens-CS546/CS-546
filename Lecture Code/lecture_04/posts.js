@@ -3,61 +3,78 @@ const posts = mongoCollections.posts;
 const dogs = require("./dogs");
 
 let exportedMethods = {
-    getPostById(id) {
-        return posts().then((postCollection) => {
-            return postCollection.findOne({ _id: id });
-        });
-    },
-    addPost(title, body, posterId) {
-        return posts().then((postCollection) => {
-            return dogs.getDogById(posterId)
-                .then((dogThatPosted) => {
-                    let newPost = {
-                        title: title,
-                        body: body,
-                        poster: {
-                            id: posterId,
-                            name: dogThatPosted.name
-                        }
-                    };
+  async getPostById(id) {
+    if (!id) throw "You must provide an id to search for";
 
-                    return postCollection.insertOne(newPost).then((newInsertInformation) => {
-                        return newInsertInformation.insertedId;
-                    }).then((newId) => {
-                        return this.getPostById(newId);
-                    });
-                });
-        });
-    },
-    removePost(id) {
-        return posts().then((postCollection) => {
-            return postCollection.removeOne({ _id: id }).then((deletionInfo) => {
-                if (deletionInfo.deletedCount === 0) {
-                    throw (`Could not delete post with id of ${id}`)
-                }
-            });
-        });
-    },
-    updatePost(id, title, body, posterId) {
-        return posts().then((postCollection) => {
-            return dogs.getDogById(posterId)
-                .then((dogThatPosted) => {
-                    let updatedPost = {
-                        title: title,
-                        body: body,
-                        poster: {
-                            id: posterId,
-                            name: dogThatPosted.name
-                        }
-                    };
+    const postCollection = await posts();
+    const post = await postCollection.findOne({ _id: id });
+    if (post === null) throw "No dog with that id";
 
-                    return postCollection.updateOne({ _id: id }, updatedPost).then((result) => {
-                        return this.getPostById(id);
-                    });
+    return post;
+  },
+  async getAllPosts() {
+    const postCollection = await posts();
 
-                });
-        });
+    const posts = await postCollection.find({}).toArray();
+    
+    return posts;
+  },
+  async addPost(title, body, posterId) {
+    if (!title) throw "You must provide a title";
+    if (!body) throw "You must provide a body";
+    if (!posterId) throw "You must specify a poster";
+
+    const postCollection = await posts();
+    const dogThatPosted = await dogs.getDogById(posterId);
+
+    const newPostInfo = {
+      title: title,
+      body: body,
+      poster: {
+        id: posterId,
+        name: dogThatPosted.name
+      }
+    };
+
+    const insertInfo = await postCollection.insertOne(newPostInfo);
+    if (insertInfo.insertedCount === 0) throw "Could not add post";
+
+    const newPost = await this.getPostById(insertInfo.insertedId);
+
+    return newPost;
+  },
+  async removePost(id) {
+    const postCollection = await posts();
+    const deletionInfo = await postCollection.removeOne({ _id: id });
+
+    if (deletionInfo.deletedCount === 0) {
+      throw `Could not delete post with id of ${id}`;
     }
-}
+  },
+  async updatePost(id, title, body, posterId) {
+    const postCollection = await posts();
+    const dogThatPosted = await dogs.getDogById(posterId);
+
+    let updatedPost = {
+      title: title,
+      body: body,
+      poster: {
+        id: posterId,
+        name: dogThatPosted.name
+      }
+    };
+
+    const updatedInfo = await postCollection.updateOne(
+      { _id: id },
+      updatedPost
+    );
+
+    if (updatedInfo.modifiedCount === 0) {
+      throw "could not update post successfully";
+    }
+
+    return await this.getPostById(id);
+  }
+};
 
 module.exports = exportedMethods;
