@@ -8,6 +8,7 @@ const getFileOperation = {
 
 // We're going to do our first asynchronous operation!
 prompt.get([getFileOperation], function(err, result) {
+  console.log("Prompt has a result");
   if (err) {
     // Exit out, something went wrong!!!
     throw err;
@@ -31,7 +32,7 @@ prompt.get([getFileOperation], function(err, result) {
       .split("")
       .reverse()
       .join("");
-
+ 
     // Now we save.
 
     const reversedName = `reversed_${fileName}`;
@@ -44,3 +45,5 @@ prompt.get([getFileOperation], function(err, result) {
     });
   });
 });
+
+console.log("After prompt is run");
