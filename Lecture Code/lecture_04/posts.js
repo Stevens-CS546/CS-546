@@ -52,6 +52,11 @@ let exportedMethods = {
     }
   },
   async updatePost(id, title, body, posterId) {
+    if (!id) throw "You must provide a post id";
+    if (!title) throw "You must provide a title";
+    if (!body) throw "You must provide a body";
+    if (!posterId) throw "You must specify a poster";
+
     const postCollection = await posts();
     const dogThatPosted = await dogs.getDogById(posterId);
 

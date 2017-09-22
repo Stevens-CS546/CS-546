@@ -57,6 +57,8 @@ module.exports = {
   async updateDog(id, name, breeds) {
     if (!id) throw "You must provide an id to search for";
 
+    if (!name) throw "You must provide a name for your dog";
+
     if (!breeds || !Array.isArray(breeds))
       throw "You must provide an array of breeds";
 
@@ -70,7 +72,7 @@ module.exports = {
 
     const updateInfo = await dogCollection.updateOne({ _id: id }, updatedDog);
     if (updatedInfo.modifiedCount === 0) {
-      throw "could not update post successfully";
+      throw "could not update dog successfully";
     }
 
     return await this.getDogById(id);
