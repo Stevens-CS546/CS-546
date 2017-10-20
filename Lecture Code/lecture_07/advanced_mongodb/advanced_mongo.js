@@ -331,3 +331,5 @@ async function main() {
       });
   };
 }
+
+main();

@@ -148,4 +148,4 @@ async function runSetup() {
 }
 
 // By exporting a function, we can run
-const exports = (module.exports = runSetup);
+exports = module.exports = runSetup;
