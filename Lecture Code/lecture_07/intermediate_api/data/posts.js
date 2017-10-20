@@ -1,133 +1,106 @@
 const mongoCollections = require("../config/mongoCollections");
 const posts = mongoCollections.posts;
 const users = require("./users");
-const uuid = require('node-uuid');
+const uuid = require("node-uuid");
 
-let exportedMethods = {
-    getAllPosts() {
-        return posts().then((postCollection) => {
-            return postCollection
-                .find({})
-                .toArray();
-        });
-    },
-    getPostsByTag(tag) {
-        if (!tag) 
-            return Promise.reject("No tag provided");
-        
-        return posts().then((postCollection) => {
-            return postCollection
-                .find({tags: tag})
-                .toArray();
-        });
-    },
-    getPostById(id) {
-        return posts().then((postCollection) => {
-            return postCollection
-                .findOne({_id: id})
-                .then((post) => {
-                    if (!post) 
-                        throw "Post not found";
-                    return post;
-                });
-        });
-    },
-    addPost(title, body, tags, posterId) {
-        if (typeof title !== "string") 
-            return Promise.reject("No title provided");
-        if (typeof body !== "string") 
-            return Promise.reject("I aint got nobody!");
+const exportedMethods = {
+  async getAllPosts() {
+    const postCollection = await posts();
+    return await postCollection.find({}).toArray();
+  },
+  async getPostsByTag(tag) {
+    if (!tag) throw "No tag provided";
 
-        if (!Array.isArray(tags)) {
-            tags = [];
-        }
-        
-        return posts().then((postCollection) => {
-            return users
-                .getUserById(posterId)
-                .then((userThatPosted) => {
-                    let newPost = {
-                        title: title,
-                        body: body,
-                        poster: {
-                            id: posterId,
-                            name: `${userThatPosted.name}`
-                        },
-                        tags: tags,
-                        _id: uuid.v4()
-                    };
+    const postCollection = await posts();
+    return await postCollection.find({ tags: tag }).toArray();
+  },
+  async getPostById(id) {
+    const postCollection = await posts();
+    const post = await postCollection.findOne({ _id: id });
 
-                    return postCollection
-                        .insertOne(newPost)
-                        .then((newInsertInformation) => {
-                            return newInsertInformation.insertedId;
-                        })
-                        .then((newId) => {
-                            return this.getPostById(newId);
-                        });
-                });
-        });
-    },
-    removePost(id) {
-        return posts().then((postCollection) => {
-            return postCollection
-                .removeOne({_id: id})
-                .then((deletionInfo) => {
-                    if (deletionInfo.deletedCount === 0) {
-                        throw(`Could not delete post with id of ${id}`)
-                    } else {}
-                });
-        });
-    },
-    updatePost(id, updatedPost) {
-        return posts().then((postCollection) => {
-            let updatedPostData = {};
+    if (!post) throw "Post not found";
+    return post;
+  },
+  async addPost(title, body, tags, posterId) {
+    if (typeof title !== "string") throw "No title provided";
+    if (typeof body !== "string") throw "I aint got nobody!";
 
-            if (updatedPost.tags) {
-                updatedPostData.tags = updatedPost.tags;
-            }
-
-            if (updatedPost.title) {
-                updatedPostData.title = updatedPost.title;
-            }
-
-            if (updatedPost.body) {
-                updatedPostData.body = updatedPost.body;
-            }
-
-            let updateCommand = {
-                $set: updatedPostData
-            };
-
-            return postCollection.updateOne({
-                _id: id
-            }, updateCommand).then((result) => {
-                return this.getPostById(id);
-            });
-        });
-    },
-    renameTag(oldTag, newTag) {
-        let findDocuments = {
-            tags: oldTag
-        };
-
-        let firstUpdate = {
-            $pull: oldTag
-        };
-
-        let secondUpdate = {
-            $addToSet: newTag
-        };
-
-        return postCollection
-            .updateMany(findDocuments, firstUpdate)
-            .then((result) => {
-                return postCollection.updateMany(findDocuments, secondUpdate);
-            })
-            .then((secondUpdate) => {
-                return this.getPostsByTag(newTag);
-            });
+    if (!Array.isArray(tags)) {
+      tags = [];
     }
-}
+
+    const postCollection = await posts();
+
+    const userThatPosted = await users.getUserById(posterId);
+
+    const newPost = {
+      title: title,
+      body: body,
+      poster: {
+        id: posterId,
+        name: `${userThatPosted.name}`
+      },
+      tags: tags,
+      _id: uuid.v4()
+    };
+
+    const newInsertInformation = await postCollection.insertOne(newPost);
+    const newId = newInsertInformation.insertedId;
+    return await this.getPostById(newId);
+  },
+  async removePost(id) {
+    const postCollection = await posts();
+    const deletionInfo = await postCollection.removeOne({ _id: id });
+    if (deletionInfo.deletedCount === 0) {
+      throw `Could not delete post with id of ${id}`;
+    }
+  },
+  async updatePost(id, updatedPost) {
+    const postCollection = await posts();
+
+    const updatedPostData = {};
+
+    if (updatedPost.tags) {
+      updatedPostData.tags = updatedPost.tags;
+    }
+
+    if (updatedPost.title) {
+      updatedPostData.title = updatedPost.title;
+    }
+
+    if (updatedPost.body) {
+      updatedPostData.body = updatedPost.body;
+    }
+
+    let updateCommand = {
+      $set: updatedPostData
+    };
+    const query = {
+      _id: id
+    };
+    await postCollection.updateOne(query, updateCommand);
+
+    return await this.getPostById(id);
+  },
+  async renameTag(oldTag, newTag) {
+    let findDocuments = {
+      tags: oldTag
+    };
+
+    let firstUpdate = {
+      $pull: oldTag
+    };
+
+    let secondUpdate = {
+      $addToSet: newTag
+    };
+
+    const postCollection = await posts();
+    await postCollection.updateMany(findDocuments, firstUpdate);
+    await postCollection.updateMany(findDocuments, secondUpdate);
+
+    return await this.getPostsByTag(newTag);
+  }
+};
 
 module.exports = exportedMethods;
