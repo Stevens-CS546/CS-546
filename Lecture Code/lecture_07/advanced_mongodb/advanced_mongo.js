@@ -16,17 +16,14 @@ async function main() {
   const movieCollection = db.collection("advancedMovies");
 
   // simple stuff
-  exports.getAllMovies = function() {
-    return movieCollection.find().toArray();
+  exports.getAllMovies = async () => {
+    return await movieCollection.find().toArray();
   };
 
   // more simple stuff
   exports.getMovie = async id => {
     if (id === undefined) throw "You must provide an ID";
-    const movie = await movieCollection
-      .findOne({ _id: id })
-      .limit(1)
-      .toArray();
+    const movie = await movieCollection.findOne({ _id: id });
 
     if (!movie) {
       throw "Could not find movie with id of " + id;
@@ -154,11 +151,8 @@ async function main() {
     if (!newTitle) throw "No title provided";
 
     // we use $set to update only the fields specified
-    return await movieCollection
-      .update({ _id: id }, { $set: { title: newTitle } })
-      .then(function() {
-        return exports.getMovie(id);
-      });
+    await movieCollection.update({ _id: id }, { $set: { title: newTitle } });
+    return await exports.getMovie(id);
   };
 
   exports.updateDirector = function(id, newDirector) {
