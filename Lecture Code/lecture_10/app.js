@@ -143,67 +143,59 @@ app.get(
     console.log(req);
     next();
   },
-  (request, response, next) => {
-    movieData.getPopularMovies().then(function(popularMovies) {
-      response.json(popularMovies);
-    });
+  async (request, response, next) => {
+    const popularMovies = await movieData.getPopularMovies();
+
+    response.json(popularMovies);
   }
 );
 
 // Get a single movie
-app.get("/api/movies/:id", function(request, response) {
-  movieData.getMovie(request.params.id).then(
-    function(movie) {
-      response.json(movie);
-    },
-    function(errorMessage) {
-      response.status(500).json({ error: errorMessage });
-    }
-  );
+app.get("/api/movies/:id", async function(request, response) {
+  const movie = await movieData.getMovie(request.params.id);
+  try {
+    response.json(movie);
+  } catch (errorMessage) {
+    response.status(500).json({ error: errorMessage });
+  }
 });
 
 // Get all the movies
-app.get("/api/movies", function(request, response) {
-  movieData.getAllMovies().then(function(movieList) {
-    response.json(movieList);
-  });
+app.get("/api/movies", async function(request, response) {
+  const movieList = await movieData.getAllMovies();
+  response.json(movieList);
 });
 
 // Create a movie
-app.post("/api/movies", function(request, response) {
-  movieData.createMovie(request.body.title, request.body.rating).then(
-    function(movie) {
-      response.json(movie);
-    },
-    function(errorMessage) {
-      response.status(500).json({ error: errorMessage });
-    }
-  );
+app.post("/api/movies", async function(request, response) {
+  try {
+    const { title, rating } = request.body;
+    const movie = await movieData.createMovie(title, rating);
+
+    response.json(movie);
+  } catch (errorMessage) {
+    response.status(500).json({ error: errorMessage });
+  }
 });
 
 // Update a movie
-app.put("/api/movies/:id", function(request, response) {
-  movieData
-    .updateMovie(request.params.id, request.body.title, request.body.rating)
-    .then(
-      function(movie) {
-        response.json(movie);
-      },
-      function(errorMessage) {
-        response.status(500).json({ error: errorMessage });
-      }
-    );
+app.put("/api/movies/:id", async function(request, response) {
+  try {
+    const { title, rating } = request.body;
+    const movie = await movieData.updateMovie(request.params.id, title, rating);
+    response.json(movie);
+  } catch (errorMessage) {
+    response.status(500).json({ error: errorMessage });
+  }
 });
 
-app.delete("/api/movies/:id", function(request, response) {
-  movieData.deleteMovie(request.params.id).then(
-    function(status) {
-      response.json({ success: status });
-    },
-    function(errorMessage) {
-      response.status(500).json({ error: errorMessage });
-    }
-  );
+app.delete("/api/movies/:id", async function(request, response) {
+  try {
+    const status = await movieData.deleteMovie(request.params.id);
+    response.json({ success: status });
+  } catch (errorMessage) {
+    response.status(500).json({ error: errorMessage });
+  }
 });
 
 app.get("/admin*", function(request, response) {
