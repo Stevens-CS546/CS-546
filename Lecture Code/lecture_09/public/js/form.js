@@ -88,6 +88,7 @@
           parsedFirstNumberValue,
           parsedSecondNumberValue
         );
+        
         resultTextElement.textContent = "The result is " + result;
         resultContainer.classList.remove("hidden");
       } catch (e) {
