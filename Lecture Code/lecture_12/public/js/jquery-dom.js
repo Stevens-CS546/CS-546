@@ -5,18 +5,21 @@ var hiClass = "Hello Instructor";
 // I don't have to rely on global variable name changes in the future
 (function($) {
   // Let's store a reference to our h1#the-heading
-  var heading = $("#the-heading"), resultAlert = $("#result-alert");
+  var heading = $("#the-heading"),
+    resultAlert = $("#result-alert");
 
   heading.text("The DOM Demonstration");
 
   // We could have set InnerHTML, but that requires parsing and then updating!
 
   var listOfItems = $("#my-list");
+  var itemsInList = listOfItems.children();
 
   // We can log these jQuery elements to see them in our console
   console.log(listOfItems);
+  console.log(itemsInList);
 
-  listOfItems.children().each(function(index, child) {
+  itemsInList.each(function(index, child) {
     // child will be a normal DOM element; but since we have it's reference,
     // we can easily wrap it into a jQuery element
     var jqChild = $(child);
@@ -39,8 +42,10 @@ var hiClass = "Hello Instructor";
 
   console.group("Form Creation");
 
-  // We can easil setup our new element with just strings
-  var numericalInput = $("<input type='number' required='' max='25' min='-20' value='12' />");
+  // We can easily setup our new element with just strings
+  var numericalInput = $(
+    "<input type='number' required='' max='25' min='-20' value='12' />"
+  );
 
   // Still a string :(
   console.log(numericalInput.val());
@@ -49,14 +54,11 @@ var hiClass = "Hello Instructor";
     resultAlert.hide();
   });
 
-  // Now we can add it to the new form
-  newForm.append(numericalInput);
-
   var submitButton = $("<input type='submit' />");
-
   submitButton.val("Submit this form!");
 
-  newForm.append(submitButton);
+  // Now we can add it to the new form
+  newForm.append(numericalInput, submitButton);
 
   newForm.submit(function(event) {
     resultAlert.text("Computing your input squared");
