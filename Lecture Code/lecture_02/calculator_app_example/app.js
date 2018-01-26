@@ -53,23 +53,28 @@ function getInfo() {
     result
   ) {
     if (result) {
-      let num1 = result.num1;
+      const quit = result.quit;
+
+      const num1 = result.num1;
 
       if (isNaN(num1)) {
         console.log("First number is not a number");
-        getInfo();
+        if (!quit) {
+          getInfo();
+        }
         return;
       }
 
-      let num2 = result.num2;
+      const num2 = result.num2;
       if (isNaN(num2)) {
         console.log("Second number is not a number");
-        getInfo();
+        if (!quit) {
+          getInfo();
+        }
         return;
       }
 
-      let quit = result.quit;
-      let operation = stringToOperation(result.operation);
+      const operation = stringToOperation(result.operation);
 
       let operationFunction = undefined;
 
@@ -88,7 +93,7 @@ function getInfo() {
           break;
       }
 
-      let numericalResult = operationFunction(num1, num2);
+      const numericalResult = operationFunction(num1, num2);
 
       console.log(
         `when you ${operation} ${num1} with ${num2} you get ${numericalResult}`
