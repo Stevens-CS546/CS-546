@@ -54,13 +54,13 @@ function getInfo() {
   ) {
     if (result) {
       let num1 = result.num1;
-      /*
+
       if (isNaN(num1)) {
         console.log("First number is not a number");
         getInfo();
         return;
       }
-*/
+
       let num2 = result.num2;
       if (isNaN(num2)) {
         console.log("Second number is not a number");
