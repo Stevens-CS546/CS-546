@@ -7,6 +7,9 @@ let undefinedVar = undefined;
 let zeroVar = 0;
 let oneVar = 1;
 
+let emptyString = "";
+let nonEmptyString = "hello";
+
 if (trueVar) {
   console.log("True is true, it checks out");
 } else {
@@ -41,6 +44,18 @@ if (oneVar) {
   console.log("oneVar evaluates to true");
 } else {
   console.log("oneVar evaluates to false");
+}
+
+if (emptyString) {
+  console.log("emptyString evaluates to true");
+} else {
+  console.log("emptyString evaluates to false");
+}
+
+if (nonEmptyString) {
+  console.log("nonEmptyString evaluates to true");
+} else {
+  console.log("nonEmptyString evaluates to false");
 }
 
 //////
