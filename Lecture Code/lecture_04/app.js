@@ -49,7 +49,7 @@ const main = async () => {
   await posts.removePost(updatedPost._id);
 
   const db = await connection();
-  await db.close();
+  await db.serverConfig.close();
 
   console.log("Done!");
 };
