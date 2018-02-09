@@ -2,7 +2,7 @@ const MongoClient = require("mongodb").MongoClient;
 const settings = require("./settings");
 const mongoConfig = settings.mongoConfig;
 
-let fullMongoUrl = `${mongoConfig.serverUrl}$`;
+let fullMongoUrl = `${mongoConfig.serverUrl}`;
 let _connection = undefined;
 let _db = undefined;
 
