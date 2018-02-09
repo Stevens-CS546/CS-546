@@ -12,7 +12,7 @@ async function main() {
   };
 
   // Gets result of user input
-  const promptResult = await prompt.getAsync([getFileOperation]);
+  let promptResult = await prompt.getAsync([getFileOperation]);
   const fileName = promptResult.fileName;
 
   if (!fileName) {
@@ -20,7 +20,23 @@ async function main() {
   }
 
   console.log(`About to read ${fileName} if it exists`);
-  const fileContent = await fs.readFileAsync(fileName, "utf-8");
+  const thisIsAPromise = fs.readFileAsync(fileName, "utf-8");
+
+  thisIsAPromise.then(fileContent => {
+    /* BLOCK X */
+    // Now we have the actual file data read
+    const reversedContent = fileContent
+      .split("")
+      .reverse()
+      .join("");
+
+    const reversedName = `reversed_${fileName}`;
+    return reversedName;
+    /* END BLOCK X */
+  });
+
+  /* BLOCK Y */
+  const fileContent = await thisIsAPromise;
 
   // Now we have the actual file data read
   const reversedContent = fileContent
@@ -29,6 +45,9 @@ async function main() {
     .join("");
 
   const reversedName = `reversed_${fileName}`;
+  /* END BLOCK Y */
+
+  /* BLOCK X and BLOCK Y are functionally equivalent */
 
   await fs.writeFileAsync(reversedName, reversedContent);
   console.log("Finished!");
@@ -37,4 +56,6 @@ async function main() {
 }
 
 // Now we run it
-main();
+main().catch(err => {
+  console.log(err);
+});
