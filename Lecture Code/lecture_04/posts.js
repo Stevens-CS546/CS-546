@@ -16,7 +16,7 @@ let exportedMethods = {
     const postCollection = await posts();
 
     const posts = await postCollection.find({}).toArray();
-    
+
     return posts;
   },
   async addPost(title, body, posterId) {
@@ -50,6 +50,7 @@ let exportedMethods = {
     if (deletionInfo.deletedCount === 0) {
       throw `Could not delete post with id of ${id}`;
     }
+    0;
   },
   async updatePost(id, title, body, posterId) {
     if (!id) throw "You must provide a post id";
@@ -69,7 +70,7 @@ let exportedMethods = {
       }
     };
 
-    const updatedInfo = await postCollection.updateOne(
+    const updatedInfo = await postCollection.replaceOne(
       { _id: id },
       updatedPost
     );
