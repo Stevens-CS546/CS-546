@@ -1,24 +1,18 @@
-const MongoClient = require("mongodb").MongoClient;;
+const MongoClient = require("mongodb").MongoClient;
 
-const settings = {
-    mongoConfig: {
-        serverUrl: "mongodb://localhost:27017/",
-        database: "apiBasedBlog"
-    }
+const mongoConfig = {
+  serverUrl: "mongodb://localhost:27017/",
+  database: "apiBasedBlog"
 };
 
-let fullMongoUrl = settings.mongoConfig.serverUrl + settings.mongoConfig.database;
-let _connection = undefined
+let _connection = undefined;
+let _db = undefined;
 
-let connectDb = () => {
-    if (!_connection) {
-        _connection = MongoClient.connect(fullMongoUrl)
-            .then((db) => {
-                return db;
-            });
-    }
+module.exports = async () => {
+  if (!_connection) {
+    _connection = await MongoClient.connect(mongoConfig.serverUrl);
+    _db = await _connection.db(mongoConfig.database);
+  }
 
-    return _connection;
+  return _db;
 };
-
-module.exports = connectDb;

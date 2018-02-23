@@ -1,29 +1,29 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const postData = data.posts;
 
-router.get("/:id", (req, res) => {
-    postData.getPostById(req.params.id).then((post) => {
-        res.json(post);
-    }).catch((error) => {
-        // Not found!
-        res.status(404).json({message: "Post not found"});
-    });
+router.get("/:id", async (req, res) => {
+  try {
+    const post = await postData.getPostById(req.params.id);
+    res.json(post);
+  } catch (e) {
+    res.status(404).json({ message: "Post not found" });
+  }
 });
 
-router.get("/", (req, res) => {
-    postData.getAllPosts().then((postList) => {
-        res.json(postList);
-    }, () => {
-        // Something went wrong with the server!
-        res.status(500).send();
-    });
+router.get("/", async (req, res) => {
+  try {
+    const postList = await postData.getAllPosts();
+    res.json(postList);
+  } catch (e) {
+    res.status(500).send();
+  }
 });
 
-router.post("/", (req, res) => {
-    // Not implemented
-    res.status(501).send();
+router.post("/", async (req, res) => {
+  // Not implemented
+  res.status(501).send();
 });
 
 module.exports = router;
