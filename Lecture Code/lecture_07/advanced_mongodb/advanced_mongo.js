@@ -2,9 +2,6 @@ const MongoClient = require("mongodb").MongoClient,
   runStartup = require("./advanced_startup_docs.js"),
   settings = require("./config.js");
 
-const fullMongoUrl =
-  settings.mongoConfig.serverUrl + settings.mongoConfig.database;
-
 async function main() {
   const allMovies = await runStartup();
   console.log(
@@ -12,7 +9,8 @@ async function main() {
   );
   console.log(allMovies);
 
-  const db = await MongoClient.connect(fullMongoUrl);
+  const connection = await MongoClient.connect(settings.mongoConfig.serverUrl);
+  const db = await connection.db(settings.mongoConfig.database);
   const movieCollection = db.collection("advancedMovies");
 
   // simple stuff

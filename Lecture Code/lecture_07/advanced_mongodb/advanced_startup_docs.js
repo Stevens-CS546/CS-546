@@ -2,11 +2,10 @@ const MongoClient = require("mongodb").MongoClient,
   settings = require("./config.js"),
   Guid = require("guid");
 
-const fullMongoUrl =
-  settings.mongoConfig.serverUrl + settings.mongoConfig.database;
-
 async function runSetup() {
-  const db = await MongoClient.connect(fullMongoUrl);
+  const connection = await MongoClient.connect(settings.mongoConfig.serverUrl);
+  const db = await connection.db(settings.mongoConfig.database);
+
   try {
     // We can recover from this; if it can't drop the collection, it's because
     await db.collection("advancedMovies").drop();
@@ -14,7 +13,7 @@ async function runSetup() {
     // the collection does not exist yet!
   }
 
-  const movieCollection = await db.createCollection("advancedMovies");
+  const movieCollection = await db.collection("advancedMovies");
   let docId = 0;
 
   const makeDoc = function(title, rating, released, director) {
