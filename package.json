@@ -1,0 +1,32 @@
+{
+  "name": "cs-546",
+  "version": "1.0.0",
+  "description": "Base repo for CS-546",
+  "main": "index.js",
+  "dependencies": {
+    "mongodb": "^3.0.2"
+  },
+  "devDependencies": {
+    "husky": "^0.15.0-rc.8",
+    "prettier": "^1.11.1",
+    "pretty-quick": "^1.4.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stevens-CS546/CS-546-WS-Summer-1.git"
+  },
+  "author": "Phil Barresi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Stevens-CS546/CS-546-WS-Summer-1/issues"
+  },
+  "homepage": "https://github.com/Stevens-CS546/CS-546-WS-Summer-1#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}
