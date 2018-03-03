@@ -1,10 +1,10 @@
 let myObj = {
-    hello: "World",
-    num: 1,
-    bool: true,
-    myFn: () => {
-        return "Hello";
-    }
+  hello: "World",
+  num: 1,
+  bool: true,
+  myFn: () => {
+    return "Hello";
+  }
 };
 
 console.log(myObj);

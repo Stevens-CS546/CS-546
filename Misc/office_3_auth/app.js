@@ -6,24 +6,26 @@ const password = "banana";
 
 let fakeCookie = { sessionId: null };
 
-let createUser = login.create(userName, password).then((user) => {
-    console.log(user);
-    return user;
+let createUser = login.create(userName, password).then(user => {
+  console.log(user);
+  return user;
 });
 
 let loginAsUser = createUser.then(() => {
-    return login.authenticateUser(userName, password);
+  return login.authenticateUser(userName, password);
 });
 
-let getSessionId = loginAsUser.then((user) => {
-    fakeCookie.sessionId = user.sessionId;
+let getSessionId = loginAsUser.then(user => {
+  fakeCookie.sessionId = user.sessionId;
 
-    return user.sessionId;
+  return user.sessionId;
 });
 
-let getUserBySessionId = getSessionId.then(() => {
+let getUserBySessionId = getSessionId
+  .then(() => {
     return login.getUserBySessionId(fakeCookie.sessionId);
-}).then((user) => {
+  })
+  .then(user => {
     console.log("user is:");
     console.log(user);
-});
+  });

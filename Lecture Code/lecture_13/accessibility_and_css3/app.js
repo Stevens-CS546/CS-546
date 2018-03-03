@@ -9,5 +9,7 @@ app.get("/", (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("Your server is now listening on port 3000! Navigate to http://localhost:3000 to access it");
+  console.log(
+    "Your server is now listening on port 3000! Navigate to http://localhost:3000 to access it"
+  );
 });

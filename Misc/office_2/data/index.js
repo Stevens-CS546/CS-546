@@ -1,5 +1,5 @@
 module.exports = {
-    events: require("./events"),
-    people: require("./people"),
-    locations: require("./locations")
+  events: require("./events"),
+  people: require("./people"),
+  locations: require("./locations")
 };

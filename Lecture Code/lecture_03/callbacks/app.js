@@ -32,7 +32,7 @@ prompt.get([getFileOperation], function(err, result) {
       .split("")
       .reverse()
       .join("");
- 
+
     // Now we save.
 
     const reversedName = `reversed_${fileName}`;

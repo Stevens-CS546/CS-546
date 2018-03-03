@@ -12,4 +12,4 @@ let toThePowerOf = Math.pow(x, y);
 console.log(toThePowerOf);
 
 let multipliedString = multiplied.toString();
-console.log(multipliedString); 
+console.log(multipliedString);
