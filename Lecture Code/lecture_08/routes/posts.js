@@ -23,7 +23,7 @@ router.get("/", async (req, res) => {
   res.render("posts/index", { posts: postList });
 });
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   let blogPostData = req.body;
   let errors = [];
 
@@ -48,19 +48,18 @@ router.post("/", (req, res) => {
     return;
   }
 
-  postData
-    .addPost(
+  try {
+    const newPost = await postData.addPost(
       blogPostData.title,
       blogPostData.body,
       blogPostData.tags || [],
       blogPostData.posterId
-    )
-    .then(newPost => {
-      res.redirect(`/posts/${newPost._id}`);
-    })
-    .catch(e => {
-      res.status(500).json({ error: e });
-    });
+    );
+
+    res.redirect(`/posts/${newPost._id}`);
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
 });
 
 router.put("/:id", (req, res) => {

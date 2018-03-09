@@ -5,6 +5,10 @@
       Post Title
       <input type="text" name="title" placeholder="Post Title" value="{{post.title}}" class="full-width-input"/>
     </label>
+    <label>
+      What number professor am I?
+      <input type="number" name="professor_ranking" placeholder="#1 professor in North America" class="full-width-input"/>
+    </label>
     <label for="post-body">
       Post Body
     </label>
@@ -15,7 +19,7 @@
     </label>
     <select class="full-width-input" name="posterId">
       <option value="">Select User...</option>
-      <option value="c49d055e-108c-42b2-9f19-af1ab418e2ba">Phil</option>
+      <option value="ee9c1ebb-a589-4075-a9a9-e6ee38145f67">Phil</option>
     </select>
     <label>
       <input type="radio" name="user-test" value="1" /> One
@@ -33,6 +37,8 @@
       <input type="checkbox" name="checkbox-test" value="second" /> Second
   </label></div>
     <button type="submit">Create New Post</button>
+    <button type="reset">Clear Form</button>
+    <button type="button">Click me!</button>
   </form>
   {{#if hasErrors}}
   <ul class="error-list">
