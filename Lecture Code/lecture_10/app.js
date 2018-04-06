@@ -93,7 +93,7 @@ app.use("/admin", function(request, response, next) {
   console.log(
     "Someone is trying to get access to /admin! We're stopping them!"
   );
-  response.status(500).send("You cannot access /admin");
+  response.status(403).send("You cannot access /admin");
 });
 
 // 5. Where we add a number to the request object
@@ -132,17 +132,16 @@ app.use(function(request, response, next) {
   next();
 });
 
+const logRequest = (req, res, next) => {
+  console.log(req);
+  next();
+};
+
 // Get the best movies
 app.get(
   "/api/movies/best",
-  (req, res, next) => {
-    console.log(req);
-    next();
-  },
-  (req, res, next) => {
-    console.log(req);
-    next();
-  },
+  logRequest,
+  logRequest,
   async (request, response, next) => {
     const popularMovies = await movieData.getPopularMovies();
 
