@@ -1,10 +1,9 @@
 {
-  "name": "lecture_10",
+  "name": "lecture_11",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
-    "seed": "node ./tasks/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
@@ -16,6 +15,7 @@
     "express-handlebars": "^3.0.0",
     "handlebars": "^4.0.5",
     "mongodb": "^2.1.18",
-    "node-uuid": "^1.4.7"
+    "node-uuid": "^1.4.7",
+    "xss": "^0.2.13"
   }
 }
