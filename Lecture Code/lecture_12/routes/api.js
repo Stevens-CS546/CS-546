@@ -6,7 +6,7 @@ const xss = require("xss");
 router.post("/todo", function(request, response) {
   todoData.makeToDo(request.body.name, request.body.description);
 
-  //response.json({ success: true, message: xss(request.body.description) });
+  // response.json({ success: true, message: request.body.description });
   response.json({ success: true, message: xss(request.body.description) });
 });
 

@@ -37,7 +37,7 @@
     var newContent = $("#new-content");
 
     if (newName && newDescription) {
-      var useJson = false;
+      var useJson = true;
       if (useJson) {
         var requestConfig = {
           method: "POST",
