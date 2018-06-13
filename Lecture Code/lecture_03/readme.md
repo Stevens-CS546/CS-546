@@ -2,45 +2,73 @@
 
 ## Introduction
 
-This week, we will cover the fundamental structure of a node application.
+This week, we're going to learn about asynchronous code. Asynchronous code is code that is written in a different order than it is run.
 
-## What is a Node Application?
+## Callbacks
 
-In Node, applications are just files that are linked together through use of `require`. When you run `node` on a file, such as `node index.js` then the node process opens the `index.js` file; each file that is referenced via the `require` command is then run; these files could require other files, in turn.
+Our [first folder](https://github.com/Stevens-CS546/CS-546/tree/master/Lecture%20Code/lecture_03/callbacks) shows us asynchronous code in callback form, the most raw form of asynchronous programming.
 
-## Dependencies
+Let's focus on the [app.js](https://github.com/Stevens-CS546/CS-546/blob/master/Lecture%20Code/lecture_03/callbacks/app.js) `fs.readFile` line (around line 25).
 
-Many weeks, we will use dependencies; these will be series of files published online through [npm](http://npmjs.com/) that we use so that we don't have to reconstruct every aspect of a project.
+Here, we see a great example of asynchronous code -- we pass arguments to the `fs.readFile` function, and then pass a callback to it: `function(fileReadError, data) { /* code here */ }`.
 
-# This Week's Code
+The next line of code you may think that runs is:
 
-## Our First Module
+```
+if (fileReadError) {
+    throw fileReadError;
+}
+```
 
-This week we have a few folders, one of which is primarily about [using modules](https://github.com/Stevens-CS546/CS-546/tree/master/Lecture%20Code/lecture_02/calculator_module_example).
+However, `fs.readFile` is asynchronous -- that means that it starts logic, and then passes the result when completed to a callback function. Rather than block an entire node process doing expensive tasks like file I/O, it accomplishes the file I/O a little bit at a time so other code can execute in the mean while. The entire callback is run after the file is fully read.
 
-[Modules](https://nodejs.org/api/modules.html#modules_modules) are files, and these files can export data from them. This exported data can be any data in JavaScript.
+## Promises
 
-Modules are used to create self-contained portions of logic. In this folder, we have a file that contains its own logic for calculator methods, and another (`app.js`) that utilizes those methods. Modules are designed to be used across any number of files.
+Callback based code is hard, and so promises were popularized as an abstraction on top of asynchronous operations to make handling them easier.
 
-We have one file acting as a module, [calculator.js](https://github.com/Stevens-CS546/CS-546/blob/master/Lecture%20Code/lecture_02/calculator_module_example/calculator.js). This file exports an object, which contains the logic needed to make calculations.
+[The second folder](https://github.com/Stevens-CS546/CS-546/tree/master/Lecture%20Code/lecture_03/promises) demonstrates these promises. Promises are structures that represent asynchronous operations, including their state (resolved, pending, or rejected) and what should happen when that state changes.
 
-Another file, [app.js](https://github.com/Stevens-CS546/CS-546/blob/master/Lecture%20Code/lecture_02/calculator_module_example/app.js) utilizes the methods exported in `calculator.js`.
+In [app.js](https://github.com/Stevens-CS546/CS-546/blob/master/Lecture%20Code/lecture_03/promises/app.js) you'll see that we start using function names that end with `Async`; how we generate those `Async` methods is covered a little below, but just know that traditionally when a method name ends with `Async` it returns a promise.
 
-## Our first 'app'
+Promises have a method named `then` on them, that take callbacks that represent what happens after the operation completes. So when we call `prompt.getAsync([getFileOperation])` we get a promise that will either resolve (complete successfully after an unknown amount of time), reject (fail after an unknown amount of time), or stay pending (for a time, or potentially forever; we don't have the [halting problem](https://en.wikipedia.org/wiki/Halting_problem) figured out just yet).
 
-Our second folder focuses on the concept of an '_app_', which is only [slightly different](https://github.com/Stevens-CS546/CS-546/tree/master/Lecture%20Code/lecture_02/calculator_app_example) than our module example. In this case, we're using an _app_ to mean a piece of software that uses multiple different packages together to create something non-trivial.
+When `then` is called on a promise, it returns a new promise that is the result of the callback returned to `then`. For example:
 
-In our case, we use the [app.js](https://github.com/Stevens-CS546/CS-546/blob/master/Lecture%20Code/lecture_02/calculator_app_example/app.js) file to utilize the [prompt](https://www.npmjs.com/package/prompt) package to query the user for input.
+```
+const promiseThatReturnsTen = Promise.resolve(10);
 
-Prompt contains a lot of asynchronous code, which is something we're seeing for the first time.
+const promiseThatReturnsTwenty = promiseThatReturnsTen.then(function(result) {
+    // result is 10
+    return result * 2;
+});
 
-## Asynchronous Code
+const promiseThatReturnsFifty = promiseThatReturnsTwenty.then(function(result) {
+    return result * 2.5;
+});
 
-When we see the [`prompt.get`](https://github.com/Stevens-CS546/CS-546/blob/e5a75bf6190920126e9ce6a484f292e15698e285/Lecture%20Code/lecture_02/calculator_app_example/app.js#L51) line, you'll notice that we pass a `callback` to the `prompt.get` method.
+// Logs 50
+promiseThatReturnsFifty.then(console.log)
+```
 
-This callback, from line 55 to 108, runs after line `111`. This is because it relies on a fundamentally asynchronous operation; waiting on user input. User input, file input, etc. takes a very long time. We will learn more about asynchronous code next lecture.
+There are more details covered in the lecture slides.
+
+### Turning Callback Code into Promise Based Code
+
+We can use the node module [bluebird](http://bluebirdjs.com) to take async operations that take callbacks and create promise based versions.
+
+To promisify one method, you would use the [bluebird.promisify](http://bluebirdjs.com/docs/api/promise.promisify.html) method; to promisify all methods on an object and create clones of the methods that are suffixed with the word `Async`. This method is the [promisifyAll](http://bluebirdjs.com/docs/api/promise.promisifyall.html) method, and returns a new object.
+
+## Async / Await
+
+Recent versions of Node have added two very important convenience keywords that allow you to unravel promises automatically: `async function` notation, which makes a function **always** return a promise, and `await` which can be used inside of async functions.
+
+Inside of async functions, we can call `await` on a promise; this will pause the function's evaluation until the promise is fulfilled. If the promise is rejected, the function will throw instead (meaning we can use try/catch blocks around awaited promises).
+
+Let's take a look at [the async/await folder](https://github.com/Stevens-CS546/CS-546/tree/master/Lecture%20Code/lecture_03/async-await) this week. You'll see we mark that function `main` as an `async` function so we can use the `await` keyword inside it. From there we can unwrap those promises automatically, such as using `const thisIsAPromise = fs.readFileAsync(fileName, "utf-8");`
 
 ## Assignment Help
 
-* The lecture slide explains how to throw errors properly, and check for bounds.
+* The lecture slides explains how to throw errors properly, and check for bounds
+* The lecture slides and code demonstrate how to handle error checking in `async/await` situations
+* Essentially all promise based functions in the course should use `async/await`
 * You should make sure to name your files and their exported function **precisely** as specified
