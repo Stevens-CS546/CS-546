@@ -4,6 +4,7 @@
   "description": "A boilerplate to use in CS-546 assignments; will be updated",
   "main": "server.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,7 +18,7 @@
   },
   "homepage": "https://github.com/Stevens-CS546/Boilerplate#readme",
   "dependencies": {
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^2.0.0",
     "bluebird": "^3.5.1",
     "body-parser": "^1.14.2",
     "cookie-parser": "^1.4.1",
